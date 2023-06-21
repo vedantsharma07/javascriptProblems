@@ -43,14 +43,27 @@ function helperFunction(time) {
   })
 }
 
-const taskList = [
+const taskListWhichResolves = [
+                  helperFunction(300),
+                  helperFunction(200),
+                  helperFunction(400),
+                  helperFunction(100)
+                  ];
+                  
+const taskListWhichRejects = [
                   helperFunction(300),
                   helperFunction(600),
                   helperFunction(100),
                   helperFunction(400)
                   ];
                   
-myPromiseAll(taskList).
+myPromiseAll(taskListWhichResolves).
+then((result)=>{
+  console.log('value from custome Promise.All', result);
+})
+.catch(console.error);
+
+myPromiseAll(taskListWhichRejects).
 then((result)=>{
   console.log('value from custome Promise.All', result);
 })
