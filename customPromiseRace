@@ -1,0 +1,56 @@
+//Polyfill for Promise.race()
+
+//if any of the promise fails or passes, return the promise.
+
+const myPromiseRace = function(taskList) {
+  
+  return new Promise((resolve, reject) => {
+    //iterate over all the promises
+    for(let i=0;i<taskList.length;i++) {
+      taskList[i].then((val) => {
+          resolve(val);
+      })
+      .catch((error) => {
+        reject(error);  })
+    }
+  })
+}
+
+// helper function which will return us the Promise
+function helperFunction(time) { 
+  return new Promise((resolve, reject) => {
+    setTimeout(function() {
+      if(time > 500) {
+        reject('time is exceeding upper limit!')
+      } else{
+        resolve(time)
+      } 
+    }, time);
+  })
+}
+
+const taskListWhichResolves = [
+                  helperFunction(300),
+                  helperFunction(200),
+                  helperFunction(400),
+                  helperFunction(100)
+                  ];
+                  
+const taskListWhichRejects = [
+                  helperFunction(800),
+                  helperFunction(600),
+                  helperFunction(700),
+                  helperFunction(900)
+                  ];
+                  
+myPromiseRace(taskListWhichResolves).
+then((result)=>{
+  console.log('value from custome Promise.race', result);
+})
+.catch(console.error);
+
+myPromiseRace(taskListWhichRejects).
+then((result)=>{
+  console.log('value from custome Promise.race', result);
+})
+.catch(console.error);
