@@ -1,0 +1,66 @@
+//Polyfill for Promise.Any()
+
+const myPromiseAny = function(taskList) {
+  
+  let results = [];
+  
+  //to keep completed promise count
+  let promiseCompleted = 0;
+  
+  //return a promise
+  return new Promise((resolve, reject) => {
+    //iterate over all the promises
+    for(let i=0;i<taskList.length;i++) {
+      //if pass, then put the value in results
+      taskList[i].then((val) => {
+          resolve(val);
+      })
+      .catch((error) => {
+        //if any promise fails, reject
+        results[i]=error;
+        reject(results);  })
+    }
+  })
+}
+
+// helper function which will return us the Promise
+function helperFunction(time) { 
+  return new Promise((resolve, reject) => {
+    setTimeout(function() {
+      // Scope inside setTimeout function is of window
+      // console.log(this === window);
+      // console.log(this.time);
+      if(time > 500) {
+        reject('time is exceeding upper limit!')
+      } else{
+        resolve(time)
+      } 
+    }, time);
+  })
+}
+
+const taskListWhichResolves = [
+                  helperFunction(300),
+                  helperFunction(200),
+                  helperFunction(400),
+                  helperFunction(100)
+                  ];
+                  
+const taskListWhichRejects = [
+                  helperFunction(800),
+                  helperFunction(600),
+                  helperFunction(700),
+                  helperFunction(900)
+                  ];
+                  
+myPromiseAny(taskListWhichResolves).
+then((result)=>{
+  console.log('value from custome Promise.Any', result);
+})
+.catch(console.error);
+
+myPromiseAny(taskListWhichRejects).
+then((result)=>{
+  console.log('value from custome Promise.Any', result);
+})
+.catch(console.error);
