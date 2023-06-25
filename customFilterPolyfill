@@ -1,0 +1,30 @@
+//Array.filter and its PolyFill
+
+const arr = [2,3,5,7];
+
+const modifiedArray = arr.filter((num, index, array) => {
+  return num > 2;
+});
+
+console.log(modifiedArray);
+
+
+//Polyfill of Array.filter.
+
+
+Array.prototype.myFilter = function (cb) {
+   let temp = [];
+   for(let i =0; i < this.length; i++) {
+     if(cb(this[i], i, this)) {
+       temp.push(this[i]);
+     }
+   }
+   
+   return temp;
+}
+
+const result = arr.myFilter((num, index, array) => {
+  return num > 2;
+});
+
+console.log(result);
