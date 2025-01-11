@@ -1,0 +1,42 @@
+// function for memoizing
+// it will memoize the function if called with the same params.
+
+function memoized(fn, context) {
+    let argsCache = {};
+    return function(...args) {
+        // store the params as key in a string
+        let str = JSON.stringify(args.sort((a,b) => b-a));
+        if(!argsCache[str]) {
+            // if not there then push it in a cache
+            argsCache[str] = fn.apply(context || this, args);
+        } else {
+            // if already there then return the value
+            return argsCache[str];
+        }
+    }
+}
+
+
+function clumsyfunction(num1, num2) {
+    for(let i=0;i<10000000;i++){}
+    return num1*num2;
+}
+
+const memoizedCall = memoized(clumsyfunction);
+console.time("1");
+console.log(memoizedCall(9675, 9676));
+console.timeEnd("1");
+
+console.time("2");
+console.log(memoizedCall(9676, 9675));
+console.timeEnd("2");
+
+
+
+// Output
+undefined
+1: 57.429ms
+93615300
+2: 0.122ms
+
+
