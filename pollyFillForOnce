@@ -1,0 +1,23 @@
+// Write a function once which will make the passed function , to be called only once.
+// Write a pollyfill for lodash once fucnction
+
+function hello() { console.log("hello") };
+
+// kill the function with null after its exceution
+
+function once(fn, context) {
+    let ran;
+    return function() {
+      if(fn) {
+        ran = fn.apply(context || this, arguments)
+        fn = null;
+      }
+    }
+}
+
+let callOnce = once(hello);
+
+callOnce();
+callOnce();
+callOnce();
+callOnce();
