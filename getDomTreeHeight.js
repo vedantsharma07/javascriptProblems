@@ -1,3 +1,16 @@
+/**
+<div>
+  <div>
+    <p>
+      <button>Hello</button>
+    </p>
+  </div>
+  <p>
+    <span>World!</span>
+  </p>
+</div>
+**/
+
 // Get the Root element, and do simple Level Order Traversal
 const root = document.querySelector('div');
 console.log(root);
