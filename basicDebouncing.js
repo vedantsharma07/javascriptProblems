@@ -1,5 +1,5 @@
 // basic debouncing.
-
+// Example is clicking on button, and on multiple clicks. it will get invoked on the last click when delay is passed
 function debounce(fn, delay) {
     let timer;
     return function(...args) {
