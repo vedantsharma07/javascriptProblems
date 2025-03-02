@@ -1,13 +1,16 @@
 // Problem is to call a callback method whenver array.push is done.
 // Attach an event to Push method of Array
+// Only push element when element is even number, please modify the original array.push method.
+
 const arr = [9, 2, 3, 4];
 const originalPush = Array.prototype.push;
 
 Array.prototype.push = function(...args) {
+    let toAdd;
     if(this.pushCb) {
-       this.pushCb(...args); 
+       toAdd = this.pushCb(...args); 
     }
-    const result = originalPush.apply(this, args);
+    const result = toAdd ? originalPush.apply(this, args): 'Cannot Push';
     return result; 
 }
 
@@ -16,14 +19,17 @@ Array.prototype.setPushCb = function(callback) {
 }
 
 
-arr.setPushCb(()=> console.log('pushed '));   
+arr.setPushCb((ele)=> {
+    if(ele % 2 === 0) {
+        return true
+    } else 
+        return false;
+});   
 
 console.log(arr.push(5));
 console.log(arr.push(6));
 console.log(arr);
 
-// pushed 
+// Cannot Push
 // 5
-// pushed 
-// 6
-// [ 9, 2, 3, 4, 5, 6, pushCb: [Function (anonymous)] ]
+// [ 9, 2, 3, 4, 6, pushCb: [Function (anonymous)] ]
